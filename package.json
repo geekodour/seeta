@@ -5,7 +5,8 @@
   "main": "seeta.js",
   "dependencies": {
     "commander": "^4.1.0",
-    "nodegit": "^0.26.4"
+    "nodegit": "^0.26.4",
+    "sodium-universal": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {

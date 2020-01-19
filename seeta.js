@@ -10,5 +10,5 @@ seeta
 seeta.parse(process.argv);
 
 if (seeta.create) utils.createSeeta(seeta.create);
-if (seeta.seed) console.log('- small pizza size');
+if (seeta.seed) utils.seedSeeta()
 if (seeta.fetch) console.log(`- ${seeta.fetch}`);
