@@ -1,0 +1,24 @@
+{
+  "name": "seeta",
+  "version": "1.0.0",
+  "description": "",
+  "main": "seeta.js",
+  "dependencies": {
+    "commander": "^4.1.0",
+    "nodegit": "^0.26.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geekodour/seeta.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geekodour/seeta/issues"
+  },
+  "homepage": "https://github.com/geekodour/seeta#readme"
+}
