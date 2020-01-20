@@ -4,6 +4,10 @@ A very simple and incomplete protocol to share files in a P2P network.
 - Control Port No. `6666`
 - Data Port No. `6969`
 
+### TODO
+- [ ] Add File Sharing
+- [ ] Add Encryption Before Sharing Data
+
 ### RPC Actions
 Response 0 for success and 1 for fail.
 - `FETCH 0`: Fetch Metadata
