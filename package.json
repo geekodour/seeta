@@ -1,6 +1,6 @@
 {
   "name": "@geekodour/seeta",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "``` export DTH_BOOTSTRAP_PORT=<port_no> ```",
   "main": "seeta.js",
   "dependencies": {
