@@ -1,4 +1,4 @@
-# Seeta
+# Seeta 🥑 
 A very simple and incomplete protocol to share files in a P2P network.
 
 ## Installation
