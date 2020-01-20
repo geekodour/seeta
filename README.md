@@ -18,9 +18,3 @@ Options:
   -b, --bootstrap          Bootstrap DHT Peers
   -h, --help               output usage information
 ```
-
-## Bootstrapping DHTs
-After bootstrap server is run, add this environment variable to seeds and fetchers.
-```
-export DTH_BOOTSTRAP_PORT=<port_no>
-```

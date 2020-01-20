@@ -122,7 +122,11 @@ seeta://${pubKey}`)
 exports.bootstrapDHT = () => {
   let dht1 = new DHT({ bootstrap: false })
   dht1.listen(() => {
-    console.log(`BootstrapDHT listening for announcements. localhost: ${dht1.address().port}`)
+    console.log(`🌱 Seeta BootstrapDHT listening for announcements. localhost:${dht1.address().port}`)
+    console.log(`
+    Run the following command before seeding/fetching:
+
+    export DTH_BOOTSTRAP_PORT=${dht1.address().port}`)
 
     // log on new announcements
     dht1.on('announce', function (peer) {
