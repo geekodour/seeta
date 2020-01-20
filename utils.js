@@ -126,6 +126,7 @@ seeta://${pubKey}`)
           switch(args[0]) {
             case META_DATA:
               console.log("MetaData was requested.")
+              //sendMetaDataFile()
               callback(null, 0); // success
               break;
             case CONTENT_DATA:
@@ -188,6 +189,7 @@ Recursive DHT lookup has terminated, Found ${d} peers having this Seeta Phal ðŸ¥
       if(response.result != 0){
         console.log("Remote server did not return success");
       }
+      //recieveMetaDataFile(peer.host)
     });
 
     //
@@ -212,5 +214,25 @@ const sendMetaDataFile = () => {
         server.close(() => { console.log("\nTransfer is done!") });
     })
   })
-  server.listen(8000, '0.0.0.0');
+  server.listen(DATA_PORT, '0.0.0.0');
+}
+
+
+const recieveMetaDataFile = (remote_server) => {
+  let socket = remote_server ? net.connect(DATA_PORT, remote_server) : net.connect(DATA_PORT);
+  let ostream = fs.createWriteStream("./metadata.json");
+  //let date = new Date(), size = 0, elapsed;
+  socket.on('data', chunk => {
+    //size += chunk.length;
+    //elapsed = new Date() - date;
+    //socket.write(`\r${(size / (1024 * 1024)).toFixed(2)} MB of data was sent. Total elapsed time is ${elapsed / 1000} s`)
+    //process.stdout.write(`\r${(size / (1024 * 1024)).toFixed(2)} MB of data was sent. Total elapsed time is ${elapsed / 1000} s`);
+    ostream.write(chunk);
+  });
+  socket.on("end", () => {
+    //console.log(`\nFinished getting file. speed was: ${((size / (1024 * 1024)) / (elapsed / 1000)).toFixed(2)} MB/s`);
+    console.log("file recieved.")
+    process.exit();
+  });
+
 }
