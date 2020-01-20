@@ -1,7 +1,8 @@
 # Seeta 🥑 
 A very simple and incomplete protocol to share files in a P2P network.
 
-> Data Transfer Port No. `6666`
+- Control Port No. `6666`
+- Data Port No. `6969`
 
 ### RPC Actions
 Response 0 for success and 1 for fail.

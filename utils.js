@@ -1,11 +1,13 @@
 const path = require("path")
+const net = require("net")
 const jayson = require("jayson")
 const DHT = require('bittorrent-dht')
 const fs = require('fs')
 const NodeGit = require("nodegit")
 const crypto = require('./crypto')
 
-const DT_PORT=6666
+const CONTROL_PORT=6666
+const DATA_PORT=6969
 
 exports.createSeeta = (filepath) => {
   let resolvedPath = path.resolve(filepath)
@@ -135,7 +137,7 @@ seeta://${pubKey}`)
           }
         }
       });
-      server.http().listen(DT_PORT);
+      server.http().listen(CONTROL_PORT);
 
       // TODO: Dgram Services should live elsewhere.
 
@@ -178,7 +180,7 @@ Recursive DHT lookup has terminated, Found ${d} peers having this Seeta Phal ðŸ¥
     console.log("ðŸŽ‰ found peer")
     console.log(`Will try to fetch metadata from ${peer.host}:${peer.port} now.`)
 
-    const client = jayson.client.http({ port: DT_PORT });
+    const client = jayson.client.http({ port: CONTROL_PORT });
 
     // Get Metadata
     client.request('ret_data', [0], function(err, response) {
@@ -191,4 +193,24 @@ Recursive DHT lookup has terminated, Found ${d} peers having this Seeta Phal ðŸ¥
     //
 
   })
+}
+
+const sendMetaDataFile = () => {
+  let istream = fs.createReadStream("./metadata.json");
+  let server = net.createServer(socket => {
+    socket.pipe(process.stdout);
+    istream.on("readable", function () {
+        let data;
+        while (data = this.read()) {
+            socket.write(data);
+        }
+    })
+    istream.on("end", function(){
+        socket.end();
+    })
+    socket.on("end", () => {
+        server.close(() => { console.log("\nTransfer is done!") });
+    })
+  })
+  server.listen(8000, '0.0.0.0');
 }
