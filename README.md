@@ -18,3 +18,40 @@ Options:
   -b, --bootstrap          Bootstrap DHT Peers
   -h, --help               output usage information
 ```
+
+## Bootstrapping DHTs
+Start by bootstrapping DHTs by running the following command:
+```
+seeta -b
+```
+output:
+```
+🌱 Seeta BootstrapDHT listening for announcements. localhost:56304
+
+    Run the following command before seeding/fetching:
+
+    export DTH_BOOTSTRAP_PORT=56304
+```
+
+## Creating a Seeta
+Create a Seeta and corresponding keys using the `-c` flag.
+```
+seeta -c <repo_name>
+```
+```
+New Seeta ready at ! /home/geekodour/OwnProjects/seeta/newseeta
+```
+
+## Seeding a Seeta
+Now you can go into the directory and fillin the contents directory with file contents. To seed the contents you can use the `-s` flag.
+```
+seeta -s
+```
+output:
+```
+Repository committed, ready to be announced.
+listening to other peers on this Seeta:52799
+
+Share this Seeta Phal 🥑 with your friends:
+seeta://d0fc562bd5f5dfd33426a9e3c99b785a4ddbe78b3a627b5dc8eb16edd9c2afdc
+```
