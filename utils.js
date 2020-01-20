@@ -5,6 +5,8 @@ const fs = require('fs')
 const NodeGit = require("nodegit")
 const crypto = require('./crypto')
 
+const DT_PORT=6666
+
 exports.createSeeta = (filepath) => {
   let resolvedPath = path.resolve(filepath)
   let idx
@@ -113,11 +115,27 @@ seeta://${pubKey}`)
       })
 
       // Start JSON RPC 
-      //const server = jayson.server({
-      //  ret_metadata: function(args, callback) {
-      //    callback(null, args[0] + args[1]);
-      //  }
-      //});
+      // response 0 for success
+      // response 1 for fail
+      const META_DATA = 0
+      const CONTENT_DATA = 1
+      const server = jayson.server({
+        ret_data: function(args, callback) {
+          switch(args[0]) {
+            case META_DATA:
+              console.log("MetaData was requested.")
+              callback(null, 0); // success
+              break;
+            case CONTENT_DATA:
+              console.log("ContentData was requested.")
+              callback(null, 0); // success
+              break;
+            default:
+              break;
+          }
+        }
+      });
+      server.http().listen(DT_PORT);
 
       // TODO: Dgram Services should live elsewhere.
 
@@ -159,5 +177,18 @@ Recursive DHT lookup has terminated, Found ${d} peers having this Seeta Phal ðŸ¥
   fetchDHT.on('peer', function (peer) {
     console.log("ðŸŽ‰ found peer")
     console.log(`Will try to fetch metadata from ${peer.host}:${peer.port} now.`)
+
+    const client = jayson.client.http({ port: DT_PORT });
+
+    // Get Metadata
+    client.request('ret_data', [0], function(err, response) {
+      if(err) throw err;
+      if(response.result != 0){
+        console.log("Remote server did not return success");
+      }
+    });
+
+    //
+
   })
 }

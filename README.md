@@ -4,8 +4,10 @@ A very simple and incomplete protocol to share files in a P2P network.
 > Data Transfer Port No. `6666`
 
 ### RPC Actions
+Response 0 for success and 1 for fail.
 - `FETCH 0`: Fetch Metadata
 - `FETCH 1`: Fetch Content, Keys and Version History
+
 
 ## Installation
 ```
