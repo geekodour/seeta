@@ -1,4 +1,5 @@
 const path = require("path")
+const jayson = require("jayson")
 const DHT = require('bittorrent-dht')
 const fs = require('fs')
 const NodeGit = require("nodegit")
@@ -111,7 +112,14 @@ Share this Seeta Phal 🥑 with your friends:
 seeta://${pubKey}`)
       })
 
-      // Start JSON RPC and Dgram Services
+      // Start JSON RPC 
+      //const server = jayson.server({
+      //  ret_metadata: function(args, callback) {
+      //    callback(null, args[0] + args[1]);
+      //  }
+      //});
+
+      // TODO: Dgram Services should live elsewhere.
 
     })
 
