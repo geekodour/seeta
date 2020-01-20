@@ -54,7 +54,7 @@ exports.createSeeta = (filepath) => {
   })
 }
 
-exports.seedSeeta = (bootstrapDHTPort) => {
+exports.seedSeeta = () => {
   let repository
   let oid
   // verify running in a Seeta repository
@@ -98,13 +98,22 @@ exports.seedSeeta = (bootstrapDHTPort) => {
       pubKey = crypto.getRepoPublicKey().toString()
 
       // Accounce it to the DHT
+      let bootstrapDHTPort = process.env.DTH_BOOTSTRAP_PORT
+      if(!bootstrapDHTPort){
+        console.log("Could not find bootstrapper.")
+        process.exit()
+      }
       let seedDHT = new DHT({ bootstrap: '127.0.0.1:' + bootstrapDHTPort })
       seedDHT.announce(pubKey, () => {
         console.log(`listening to other peers on this Seeta:${seedDHT.address().port}`)
+        console.log(`
+Share this Seeta Phal 🥑 with your friends:
+seeta://${pubKey}`)
       })
 
-    })
+      // Start JSON RPC and Dgram Services
 
+    })
 
   })
 }
@@ -113,12 +122,30 @@ exports.seedSeeta = (bootstrapDHTPort) => {
 exports.bootstrapDHT = () => {
   let dht1 = new DHT({ bootstrap: false })
   dht1.listen(() => {
-    //let dht2 = new DHT({ bootstrap: '127.0.0.1:' + dht1.address().port })
-    console.log(`DHT1 Listening for announcements. localhost: ${dht1.address().port}`)
+    console.log(`BootstrapDHT listening for announcements. localhost: ${dht1.address().port}`)
 
     // log on new announcements
     dht1.on('announce', function (peer) {
       console.log("new peer just announced:", peer)
     })
+  })
+}
+
+// fetching
+exports.fetchSeeta = (url) => {
+  let bootstrapDHTPort = process.env.DTH_BOOTSTRAP_PORT
+  let fetchDHT = new DHT({ bootstrap: '127.0.0.1:' + bootstrapDHTPort })
+  fetchDHT.lookup(url,(e,d)=>{
+    if(e!==null){
+      console.log("DHT Lookup error.")
+    }
+    console.log(`
+
+Recursive DHT lookup has terminated, Found ${d} peers having this Seeta Phal 🥑
+    `)
+  })
+  fetchDHT.on('peer', function (peer) {
+    console.log("🎉 found peer")
+    console.log(`Will try to fetch metadata from ${peer.host}:${peer.port} now.`)
   })
 }
