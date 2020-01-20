@@ -1,17 +1,8 @@
 const path = require("path")
-const sodium = require("sodium-universal")
+const DHT = require('bittorrent-dht')
 const fs = require('fs')
 const NodeGit = require("nodegit")
-
-const genKeyPair = () => {
-  let publicKey = Buffer.allocUnsafe(sodium.crypto_sign_PUBLICKEYBYTES)
-  let secretKey = Buffer.allocUnsafe(sodium.crypto_sign_SECRETKEYBYTES)
-  sodium.crypto_sign_keypair(publicKey, secretKey)
-  return {
-    publicKey: publicKey,
-    secretKey: secretKey
-  }
-}
+const crypto = require('./crypto')
 
 exports.createSeeta = (filepath) => {
   let resolvedPath = path.resolve(filepath)
@@ -31,7 +22,7 @@ exports.createSeeta = (filepath) => {
       fs.mkdirSync(contentsPath);
     }
     // Create private and public keys
-    let keys = genKeyPair()
+    let keys = crypto.genKeyPair()
     // create metadata.json
     fs.writeFile(`${resolvedPath}/S.key`, `${keys.secretKey.toString('hex')}`, function(err) {
       if(err) {
@@ -63,7 +54,7 @@ exports.createSeeta = (filepath) => {
   })
 }
 
-exports.seedSeeta = () => {
+exports.seedSeeta = (bootstrapDHTPort) => {
   let repository
   let oid
   // verify running in a Seeta repository
@@ -101,5 +92,33 @@ exports.seedSeeta = () => {
     return repository.createCommit("HEAD", s, s, "Seeding Commit", oid, [parent])
   }).done(function(commitId){
     console.log(`Repository committed, ready to be announced.`)
+
+    repository.getReferenceCommit('master').then((c)=>{
+      //let shaHash = c.sha()
+      pubKey = crypto.getRepoPublicKey().toString()
+
+      // Accounce it to the DHT
+      let seedDHT = new DHT({ bootstrap: '127.0.0.1:' + bootstrapDHTPort })
+      seedDHT.announce(pubKey, () => {
+        console.log(`listening to other peers on this Seeta:${seedDHT.address().port}`)
+      })
+
+    })
+
+
+  })
+}
+
+// currently works for local testing
+exports.bootstrapDHT = () => {
+  let dht1 = new DHT({ bootstrap: false })
+  dht1.listen(() => {
+    //let dht2 = new DHT({ bootstrap: '127.0.0.1:' + dht1.address().port })
+    console.log(`DHT1 Listening for announcements. localhost: ${dht1.address().port}`)
+
+    // log on new announcements
+    dht1.on('announce', function (peer) {
+      console.log("new peer just announced:", peer)
+    })
   })
 }

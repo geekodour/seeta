@@ -4,6 +4,7 @@
   "description": "",
   "main": "seeta.js",
   "dependencies": {
+    "bittorrent-dht": "^9.0.3",
     "commander": "^4.1.0",
     "nodegit": "^0.26.4",
     "sodium-universal": "^2.0.0"
