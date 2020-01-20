@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const seeta = require('commander');
 const utils = require('./utils')
 
