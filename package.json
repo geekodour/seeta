@@ -4,9 +4,10 @@
   "description": "``` export DTH_BOOTSTRAP_PORT=<port_no> ```",
   "main": "seeta.js",
   "dependencies": {
-    "bittorrent-dht": "^9.0.3",
+    "bittorrent-dht": "^10.0.0",
     "commander": "^4.1.0",
     "jayson": "^3.2.0",
+    "magnet-uri": "^5.2.4",
     "nodegit": "^0.26.4",
     "sodium-universal": "^2.0.0"
   },
